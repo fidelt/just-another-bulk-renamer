@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #  Just Another Bulk Renamer
-#  A simply bulk-renaming tool inspired by Thunar's Bulk Renamer
+#  A simple bulk-renaming tool inspired by Thunar's Bulk Renamer
 #
 #  Copyright (C) 2014  Genes Fidel Tamondong <fidel.tamondong@gmail.com>
 #
