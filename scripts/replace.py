@@ -2,7 +2,6 @@
 # Author: Fidel Tamondong
 
 import re
-# Replace script for JABR
 
 try:
   # Python 3.3
