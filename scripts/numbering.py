@@ -4,13 +4,9 @@
 try:
   # Python 3.3
   import tkinter
-  import tkinter.filedialog as filedialog
-  import tkinter.messagebox as messagebox
 except ImportError:
   # Python 2.7
   import Tkinter as tkinter
-  import tkFileDialog as filedialog
-  import tkMessageBox as messagebox
   
 def init(jabr, update_newname):
   init.update_newname = update_newname
