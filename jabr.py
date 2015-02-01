@@ -166,9 +166,9 @@ class Main(tkinter.Tk):
     err_log.write(err)
     err_log.close()
     
-  def getpath(self, path, postfix):
+  def getpath(self, path, file):
     path = os.path.realpath(path)
-    path = os.path.join(os.path.dirname(path), postfix)
+    path = os.path.join(os.path.dirname(path), file)
     return path.replace('\\', '/')
     
   def jabr_loc(self):
