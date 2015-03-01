@@ -42,7 +42,7 @@ class Main(tkinter.Tk):
     
   def initialize(self):
     self.file_list = [] # FORMAT: [Filename, Full Path]
-    self.err_text = ''
+    self.err = ''
     self.ver = "0.9"
     self.grid()
     
@@ -151,10 +151,10 @@ class Main(tkinter.Tk):
     self.grid_columnconfigure(19, weight=1)
     self.grid_rowconfigure(1, weight=1)
     
-  def show_error(self, err):
+  def show_error(self):
     msgbox = messagebox
-    msgbox.showerror('Error', err)
-    self.err_text = ''
+    msgbox.showerror('Error', self.err)
+    self.err = ''
     
   def log_error(self, err):
     err_log = open(self.getpath(self.jabr_loc(), 'Error.log'), 'w')
@@ -208,8 +208,8 @@ class Main(tkinter.Tk):
         self.modules[i] = __import__(script)
       except Exception:
         errlog += "{0}\n".format(traceback.format_exc())
-        self.err_text = "Unable to load all scripts.\n" + \
-                        "See Error.log for more information."
+        self.err = "Unable to load all scripts.\n" + \
+                   "See Error.log for more information."
         scripts.pop(i)
         i -= 1
       i += 1
@@ -298,6 +298,7 @@ class Main(tkinter.Tk):
     # Updates Filename through calling respective functions
     errlog = ''
     if ren_index == 0:
+      # DEFAULT: Letter Case
       return self.changecase(string)
     else:
       try:
@@ -318,7 +319,7 @@ class Main(tkinter.Tk):
     elif case_index == 2:
       return string.upper()
     
-  def del_newname_duplicates(self, filenames):
+  def get_uniques(self, filenames):
     tmp = []
     for file in filenames:
       if file not in tmp:
@@ -352,17 +353,20 @@ class Main(tkinter.Tk):
     try:
       for file in self.file_list:
         if file_index == 0:
+          # Filename Only
           prefix, suffix = self.split_filename(file[0])
           newfile = self.update_filename(ren_index, prefix) + suffix
         elif file_index == 1:
+          # Extension Only
           prefix, suffix = self.split_filename(file[0])
           newfile = prefix + self.update_filename(ren_index, suffix)
         elif file_index == 2:
+          # Filename & Extension
           newfile = self.update_filename(ren_index, file[0])
         new_filenames.append(newfile)
         
       # Adds updated filename to newName listbox, blank if no change
-      uniques = self.del_newname_duplicates(new_filenames)
+      uniques = self.get_uniques(new_filenames)
       i = 0
       while i < len(self.file_list):
         if (self.file_list[i][0] != new_filenames[i]) or (new_filenames[i] not in uniques):
@@ -395,8 +399,8 @@ class Main(tkinter.Tk):
       newfiles = self.tk.splitlist(newfiles)
     except Exception:
       errlog += "{0}\n".format(traceback.format_exc())
-      self.err_text = "Unable to add all files.\n" + \
-                      "See Error.log for more information."
+      self.err = "Unable to add all files.\n" + \
+                 "See Error.log for more information."
       self.log_error(errlog)
     finally:
       filelistpaths = []
@@ -433,6 +437,7 @@ class Main(tkinter.Tk):
     errlog = ''
     index = self.rename_options.index(grp_name)
     if index == 0:
+      # DEFAULT: Letter Case
       self.module_grp.destroy()
       self.lettercase_grp.grid(column=0, row=3, columnspan=21, sticky='news', padx=5, pady=5)
     else:
@@ -457,13 +462,13 @@ class Main(tkinter.Tk):
       newname = self.getpath(self.file_list[i][1], newname_lst[i])
       if os.path.isfile(newname):
         errlog += "'{0}' already exists.\n".format(newname)
-        self.err_text = "All files were not renamed.\n" + \
-                        "See Error.log for more information."
+        self.err = "All files were not renamed.\n" + \
+                   "See Error.log for more information."
       i+= 1
       
     if errlog:
       self.log_error(errlog)
-      self.show_error(self.err_text)
+      self.show_error()
       return 1
     
   def rename(self):
@@ -486,8 +491,8 @@ class Main(tkinter.Tk):
           self.oldname_lstbx.insert(len(self.file_list), self.file_list[i][0])
       except OSError as error:
         errlog += "'{0}' was not renamed: {1}\n".format(self.file_list[i][1], str(error))
-        self.err_text = "Not all files were renamed.\n" + \
-                        "See Error.log for more information."
+        self.err = "Not all files were renamed.\n" + \
+                   "See Error.log for more information."
         self.newname_lstbx.delete(newname_lst.index(newname_lst[i]))
         self.file_list.pop(newname_lst.index(newname_lst[i]))
         newname_lst.pop(newname_lst.index(newname_lst[i]))
@@ -496,7 +501,7 @@ class Main(tkinter.Tk):
     
     if errlog:
       self.log_error(errlog)
-      self.show_error(self.err_text)
+      self.show_error()
     self.update_newname()
     
   def about_show(self):
@@ -513,6 +518,6 @@ if __name__ == "__main__":
   app = Main(None)
   app.title("Just Another Bulk Renamer")
   app.minsize(480, 400)
-  if app.err_text:
-    app.show_error(app.err_text)
+  if app.err:
+    app.show_error()
   app.mainloop()
