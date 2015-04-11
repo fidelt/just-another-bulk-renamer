@@ -460,7 +460,8 @@ class Main(tkinter.Tk):
     i = 0
     while i < len(newname_lst):
       newname = self.getpath(self.file_list[i][1], newname_lst[i])
-      if os.path.isfile(newname):
+      directory, filename = os.path.split(newname)
+      if filename in os.listdir(directory):
         errlog += "'{0}' already exists.\n".format(newname)
         self.err = "All files were not renamed.\n" + \
                    "See Error.log for more information."
