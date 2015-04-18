@@ -183,10 +183,9 @@ class Main(tkinter.Tk):
     scripts = []
     try:
       files = os.listdir(self.getpath(self.jabr_loc(), 'scripts'))
-      if files:
-        for file in files:
-          if file.endswith('.py'):
-            scripts.append(file)
+      for file in files:
+        if file.endswith('.py'):
+          scripts.append(file)
     except OSError:
       pass
     return scripts
@@ -201,18 +200,16 @@ class Main(tkinter.Tk):
     self.modules = [0] * len(scripts)
     systempath = list(sys.path)
     sys.path.insert(0, self.getpath(self.jabr_loc(), 'scripts'))
-    i = 0
-    while i < len(scripts):
+    for i in range (0, len(scripts)):
       try:
         script = self.split_filename(scripts[i])[0]
         self.modules[i] = __import__(script)
-      except Exception:
+      except (TypeError, ImportError):
         errlog += "{0}\n".format(traceback.format_exc())
         self.err = "Unable to load all scripts.\n" + \
                    "See Error.log for more information."
         scripts.pop(i)
         i -= 1
-      i += 1
     if errlog:
       self.log_error(errlog)
     sys.path[:] = systempath
@@ -367,8 +364,7 @@ class Main(tkinter.Tk):
         
       # Adds updated filename to newName listbox, blank if no change
       uniques = self.get_uniques(new_filenames)
-      i = 0
-      while i < len(self.file_list):
+      for i in range (0, len(self.file_list)):
         if (self.file_list[i][0] != new_filenames[i]) or (new_filenames[i] not in uniques):
           self.newname_lstbx.insert(i, new_filenames[i])
           self.newname_blanks -= 1
@@ -378,7 +374,6 @@ class Main(tkinter.Tk):
         else:
           self.newname_lstbx.insert(len(self.file_list), '')
           self.newname_blanks += 1
-        i += 1
         
       if self.newname_blanks < 0:
         self.newname_blanks = 0
@@ -457,15 +452,13 @@ class Main(tkinter.Tk):
   def newname_availability(self, newname_lst):
     # Checks if candidate newname is an existing file
     errlog = ''
-    i = 0
-    while i < len(newname_lst):
+    for i in range (0, len(newname_lst)):
       newname = self.getpath(self.file_list[i][1], newname_lst[i])
       directory, filename = os.path.split(newname)
       if filename in os.listdir(directory):
         errlog += "'{0}' already exists.\n".format(newname)
         self.err = "All files were not renamed.\n" + \
                    "See Error.log for more information."
-      i+= 1
       
     if errlog:
       self.log_error(errlog)
@@ -480,8 +473,7 @@ class Main(tkinter.Tk):
       return
     self.oldname_lstbx.delete(0, self.oldname_lstbx.size())
     self.newname_lstbx.delete(0, self.newname_lstbx.size())
-    i = 0
-    while i < len(newname_lst):
+    for i in range (0, len(newname_lst)):
       try:
         if newname_lst[i]:
           os.rename(self.file_list[i][1], self.getpath(self.file_list[i][1], newname_lst[i]))
@@ -498,7 +490,6 @@ class Main(tkinter.Tk):
         self.file_list.pop(newname_lst.index(newname_lst[i]))
         newname_lst.pop(newname_lst.index(newname_lst[i]))
         i -= 1
-      i += 1
     
     if errlog:
       self.log_error(errlog)
