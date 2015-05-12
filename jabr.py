@@ -104,10 +104,12 @@ class Main(tkinter.Tk):
     self.load_scripts()
     self.rename_var = tkinter.StringVar()
     self.rename_var.set(self.rename_options[0])
-    rename_optionmenu = tkinter.OptionMenu(self,
-                                           self.rename_var,
-                                           *self.rename_options,
-                                           command=self.show_group)
+    rename_optionmenu = tkinter.OptionMenu(
+        self,
+        self.rename_var,
+        *self.rename_options,
+        command=self.show_group
+        )
     rename_optionmenu.configure(width=10)
     rename_optionmenu.grid(column=0, row=2, columnspan=10, sticky='news', padx=(5, 0))
     
@@ -115,10 +117,12 @@ class Main(tkinter.Tk):
     self.file_options = ['Filename Only', 'Extension Only', 'Filename & Extension']
     self.file_var = tkinter.StringVar()
     self.file_var.set(self.file_options[0])
-    file_optionmenu = tkinter.OptionMenu(self,
-                                         self.file_var,
-                                         *self.file_options,
-                                         command=self.update_newname)
+    file_optionmenu = tkinter.OptionMenu(
+        self,
+        self.file_var,
+        *self.file_options,
+        command=self.update_newname
+        )
     file_optionmenu.configure(width=10)
     file_optionmenu.grid(column=11, row=2, columnspan=10, sticky='news', padx=(0, 5))
     
@@ -131,10 +135,12 @@ class Main(tkinter.Tk):
     self.case_options = ['Capitalization', 'lower case', 'UPPER CASE']
     self.case_var = tkinter.StringVar()
     self.case_var.set(self.case_options[0])
-    case_optionmenu = tkinter.OptionMenu(self.lettercase_grp,
-                                         self.case_var,
-                                         *self.case_options,
-                                         command=self.update_newname)
+    case_optionmenu = tkinter.OptionMenu(
+        self.lettercase_grp,
+        self.case_var,
+        *self.case_options,
+        command=self.update_newname
+        )
     case_optionmenu.config(width=15)
     case_optionmenu.grid(column=1, row=0, sticky='w')
     
@@ -158,11 +164,14 @@ class Main(tkinter.Tk):
     
   def log_error(self, err):
     err_log = open(self.getpath(self.jabr_loc(), 'Error.log'), 'w')
-    err_log.write("Just Another Bulk Renamer {0} (Python {1}.{2}.{3}):\n" \
-                  .format(self.ver,
-                  sys.version_info[0],
-                  sys.version_info[1],
-                  sys.version_info[2]))
+    err_log.write(
+        "Just Another Bulk Renamer {0} (Python {1}.{2}.{3}):\n".format(
+            self.ver,
+            sys.version_info[0],
+            sys.version_info[1],
+            sys.version_info[2]
+            )
+        )
     err_log.write(err)
     err_log.close()
     
@@ -243,11 +252,10 @@ class Main(tkinter.Tk):
   def delduplicates(self, oldlist, newlist):
     # Checks for duplicates and removes them from files to be added
     duplicates = set(oldlist).intersection(set(newlist))
-    if len(duplicates) != 0:
-      for duplicate in duplicates:
-        for element in newlist:
-          if duplicate == element:
-            del newlist[newlist.index(element)]
+    for duplicate in duplicates:
+      for element in newlist:
+        if duplicate == element:
+          del newlist[newlist.index(element)]
     
   def rename_status(self, duplicates):
     # Disables Rename button if the newname listbox is empty
@@ -497,10 +505,14 @@ class Main(tkinter.Tk):
     self.update_newname()
     
   def about_show(self):
-    self.about.geometry("{0}x{1}+{2}+{3}" \
-                        .format(240, 200,
-                        self.winfo_x() + int(self.winfo_width()/2)-120,
-                        self.winfo_y() + int(self.winfo_height()/2)-100))
+    self.about.geometry(
+        "{0}x{1}+{2}+{3}".format(
+            240,
+            200,
+            self.winfo_x() + int(self.winfo_width()/2) - 120,
+            self.winfo_y() + int(self.winfo_height()/2) - 100
+            )
+        )
     self.about.deiconify()
     
   def about_hide(self):
