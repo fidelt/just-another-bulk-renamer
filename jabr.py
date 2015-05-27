@@ -252,10 +252,9 @@ class Main(tkinter.Tk):
   def delduplicates(self, oldlist, newlist):
     # Checks for duplicates and removes them from files to be added
     duplicates = set(oldlist).intersection(set(newlist))
-    for duplicate in duplicates:
-      for element in newlist:
-        if duplicate == element:
-          del newlist[newlist.index(element)]
+    for item in newlist:
+      if item in duplicates:
+        del newlist[newlist.index(item)]
     
   def rename_status(self, duplicates):
     # Disables Rename button if the newname listbox is empty
