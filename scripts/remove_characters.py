@@ -31,7 +31,7 @@ def init(jabr, update_newname):
       jabr,
       init.fromvar,
       *init.from_options,
-      command=update_filename,
+      command=update_filename
       )
   from_optionmenu.configure(width=15)
   from_optionmenu.grid(column=1, row=2, sticky='ew')

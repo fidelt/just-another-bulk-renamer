@@ -26,7 +26,7 @@ def init(jabr, update_newname):
       jabr,
       init.numvar,
       *init.numformat_options,
-      command=update_newname,
+      command=update_newname
       )
   numformat_optionmenu.configure(width=15)
   numformat_optionmenu.grid(column=1, row=0, sticky='w')
@@ -44,7 +44,7 @@ def init(jabr, update_newname):
       'OldName Text Number',
       'Number Text OldName',
       'Text Number',
-      'Number Text',
+      'Number Text'
       ]
   init.strvar = tkinter.StringVar()
   init.strvar.set(init.strformat_options[0])
@@ -52,7 +52,7 @@ def init(jabr, update_newname):
       jabr,
       init.strvar,
       *init.strformat_options,
-      command=update_newname,
+      command=update_newname
       )
   strformat_optionmenu.configure(width=20)
   strformat_optionmenu.grid(column=1, row=1, sticky='w')
