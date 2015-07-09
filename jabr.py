@@ -211,7 +211,8 @@ class Main(tkinter.Tk):
     self.modules = [0] * len(scripts)
     systempath = list(sys.path)
     sys.path.insert(0, self.getpath(self.jabr_loc(), 'scripts'))
-    for i in range (0, len(scripts)-1):
+    i = 0
+    while i < len(scripts):
       try:
         script = self.split_filename(scripts[i])[0]
         self.modules[i] = __import__(script)
@@ -221,6 +222,7 @@ class Main(tkinter.Tk):
                    "See Error.log for more information."
         scripts.pop(i)
         i -= 1
+      i += 1
     if errlog:
       self.log_error(errlog)
     sys.path[:] = systempath
