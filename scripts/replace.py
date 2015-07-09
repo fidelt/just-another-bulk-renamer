@@ -3,12 +3,12 @@
 # License: GNU General Public License v3
 
 import re
+import sys
 
-try:
-  # Python 3.3
+if (sys.version_info[0] >= 3):
+  # Python 3 or greater
   import tkinter
-except ImportError:
-  # Python 2.7
+else:
   import Tkinter as tkinter
   
 def init(jabr, update_newname):  

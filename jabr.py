@@ -23,13 +23,12 @@ import re
 import sys
 import traceback
 
-try:
-  # Python 3.3
+if (sys.version_info[0] >= 3):
+  # Python 3 or greater
   import tkinter
   import tkinter.filedialog as filedialog
   import tkinter.messagebox as messagebox
-except ImportError:
-  # Python 2.7
+else:
   import Tkinter as tkinter
   import tkFileDialog as filedialog
   import tkMessageBox as messagebox
@@ -157,9 +156,12 @@ class Main(tkinter.Tk):
     self.grid_columnconfigure(19, weight=1)
     self.grid_rowconfigure(1, weight=1)
     
-  def show_error(self):
+  def show_error(self, msg, log=""):
+    self.err = msg
     msgbox = messagebox
     msgbox.showerror('Error', self.err)
+    if log:
+      self.log_error(log)
     self.err = ''
     
   def log_error(self, err):
@@ -209,7 +211,7 @@ class Main(tkinter.Tk):
     self.modules = [0] * len(scripts)
     systempath = list(sys.path)
     sys.path.insert(0, self.getpath(self.jabr_loc(), 'scripts'))
-    for i in range (0, len(scripts)):
+    for i in range (0, len(scripts)-1):
       try:
         script = self.split_filename(scripts[i])[0]
         self.modules[i] = __import__(script)
@@ -309,9 +311,11 @@ class Main(tkinter.Tk):
         return self.modules[ren_index-1].update_filename(string)
       except AttributeError:
         errlog += "{0}\n".format(traceback.format_exc())
-        self.show_error("Error found in 'update_filename' attribute of '{0}' module.\n" \
-                        "See Error.log for more information.".format(self.rename_var.get()))
-        self.log_error(errlog)
+        self.show_error(
+            "Error found in 'update_filename' attribute of '{0}' module.\n" \
+            "See Error.log for more information.".format(self.rename_var.get()),
+            errlog
+            )
         self.default_rename_option()
     
   def changecase(self, string):
@@ -401,9 +405,11 @@ class Main(tkinter.Tk):
       newfiles = self.tk.splitlist(newfiles)
     except Exception:
       errlog += "{0}\n".format(traceback.format_exc())
-      self.err = "Unable to add all files.\n" + \
-                 "See Error.log for more information."
-      self.log_error(errlog)
+      self.show_error(
+          "Unable to add all files.\n" + \
+          "See Error.log for more information.",
+          errlog
+          )
     finally:
       filelistpaths = []
       for file in self.file_list:
@@ -450,9 +456,11 @@ class Main(tkinter.Tk):
         self.modules[index-1].init(self.module_grp, self.update_newname)
       except AttributeError:
         errlog += "{0}\n".format(traceback.format_exc())
-        self.show_error("Error found in 'init' attribute of '{0}' module.\n" \
-                        "See Error.log for more information.".format(grp_name))
-        self.log_error(errlog)
+        self.show_error(
+            "Error found in 'init' attribute of '{0}' module.\n" \
+            "See Error.log for more information.".format(grp_name),
+            errlog
+            )
         self.default_rename_option()
     self.update_newname()
     
@@ -464,12 +472,13 @@ class Main(tkinter.Tk):
       directory, filename = os.path.split(newname)
       if filename in os.listdir(directory):
         errlog += "'{0}' already exists.\n".format(newname)
-        self.err = "All files were not renamed.\n" + \
-                   "See Error.log for more information."
       
     if errlog:
-      self.log_error(errlog)
-      self.show_error()
+      self.show_error(
+          "All files were not renamed.\n" + \
+          "See Error.log for more information.",
+          errlog
+          )
       return 1
     
   def rename(self):
@@ -491,16 +500,17 @@ class Main(tkinter.Tk):
           self.oldname_lstbx.insert(len(self.file_list), self.file_list[i][0])
       except OSError as error:
         errlog += "'{0}' was not renamed: {1}\n".format(self.file_list[i][1], str(error))
-        self.err = "Not all files were renamed.\n" + \
-                   "See Error.log for more information."
         self.newname_lstbx.delete(newname_lst.index(newname_lst[i]))
         self.file_list.pop(newname_lst.index(newname_lst[i]))
         newname_lst.pop(newname_lst.index(newname_lst[i]))
         i -= 1
     
     if errlog:
-      self.log_error(errlog)
-      self.show_error()
+      self.show_error(
+          "Not all files were renamed.\n" + \
+          "See Error.log for more information.",
+          errlog
+          )
     self.update_newname()
     
   def about_show(self):
@@ -518,9 +528,12 @@ class Main(tkinter.Tk):
     self.about.withdraw()
     
 if __name__ == "__main__":
-  app = Main(None)
-  app.title("Just Another Bulk Renamer")
-  app.minsize(480, 400)
-  if app.err:
-    app.show_error()
-  app.mainloop()
+  try:
+    app = Main(None)
+    app.title("Just Another Bulk Renamer")
+    app.minsize(480, 400)
+    if app.err:
+      app.show_error(app.err)
+    app.mainloop()
+  except Exception:
+    print("{0}\n".format(traceback.format_exc()))
