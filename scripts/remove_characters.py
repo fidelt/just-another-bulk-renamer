@@ -1,5 +1,6 @@
 # Remove Characters script for JABR
 # Author: Fidel Tamondong
+# License: GNU General Public License v3
 
 try:
   # Python 3.3
@@ -26,10 +27,12 @@ def init(jabr, update_newname):
   init.from_options = ['From the Left', 'From the Right']
   init.fromvar = tkinter.StringVar()
   init.fromvar.set(init.from_options[0])
-  from_optionmenu = tkinter.OptionMenu(jabr,
-                                       init.fromvar,
-                                       *init.from_options,
-                                       command=update_filename)
+  from_optionmenu = tkinter.OptionMenu(
+      jabr,
+      init.fromvar,
+      *init.from_options,
+      command=update_filename,
+      )
   from_optionmenu.configure(width=15)
   from_optionmenu.grid(column=1, row=2, sticky='ew')
   

@@ -1,5 +1,6 @@
 # Replace script for JABR
 # Author: Fidel Tamondong
+# License: GNU General Public License v3
 
 import re
 

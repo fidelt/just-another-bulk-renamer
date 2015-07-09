@@ -1,5 +1,6 @@
 # Numbering script for JABR
 # Author: Fidel Tamondong
+# License: GNU General Public License v3
 
 try:
   # Python 3.3
@@ -13,16 +14,20 @@ def init(jabr, update_newname):
   
   numformat_label = tkinter.Label(jabr, text='Numbering:')
   numformat_label.grid(column=0, row=0, sticky='e')
-  init.numformat_options = ['1, 2, 3...',
-                            '01, 02, 03...',
-                            '001, 002, 003...',
-                            '0001, 0002, 0003...']
+  init.numformat_options = [
+      '1, 2, 3...',
+      '01, 02, 03...',
+      '001, 002, 003...',
+      '0001, 0002, 0003...',
+      ]
   init.numvar = tkinter.StringVar()
   init.numvar.set(init.numformat_options[0])
-  numformat_optionmenu = tkinter.OptionMenu(jabr,
-                                            init.numvar,
-                                            *init.numformat_options,
-                                            command=update_newname)
+  numformat_optionmenu = tkinter.OptionMenu(
+      jabr,
+      init.numvar,
+      *init.numformat_options,
+      command=update_newname,
+      )
   numformat_optionmenu.configure(width=15)
   numformat_optionmenu.grid(column=1, row=0, sticky='w')
   
@@ -35,16 +40,20 @@ def init(jabr, update_newname):
   
   strformat_label = tkinter.Label(jabr, text='Filename:')
   strformat_label.grid(column=0, row=1, sticky='e')
-  init.strformat_options = ['OldName Text Number',
-                            'Number Text OldName',
-                            'Text Number',
-                            'Number Text']
+  init.strformat_options = [
+      'OldName Text Number',
+      'Number Text OldName',
+      'Text Number',
+      'Number Text',
+      ]
   init.strvar = tkinter.StringVar()
   init.strvar.set(init.strformat_options[0])
-  strformat_optionmenu = tkinter.OptionMenu(jabr,
-                                            init.strvar,
-                                            *init.strformat_options,
-                                            command=update_newname)
+  strformat_optionmenu = tkinter.OptionMenu(
+      jabr,
+      init.strvar,
+      *init.strformat_options,
+      command=update_newname,
+      )
   strformat_optionmenu.configure(width=20)
   strformat_optionmenu.grid(column=1, row=1, sticky='w')
   
