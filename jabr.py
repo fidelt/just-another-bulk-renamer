@@ -34,15 +34,16 @@ else:
   import tkMessageBox as messagebox
 
 class Main(tkinter.Tk):
+  file_list = [] # FORMAT: [Filename, Full Path]
+  err = ''
+  ver = "0.9"
+  
   def __init__(self, parent):
     tkinter.Tk.__init__(self, parent)
     self.parent = parent
     self.initialize()
     
   def initialize(self):
-    self.file_list = [] # FORMAT: [Filename, Full Path]
-    self.err = ''
-    self.ver = "0.9"
     self.grid()
     
     # About
@@ -260,10 +261,10 @@ class Main(tkinter.Tk):
       if item in duplicates:
         del newlist[newlist.index(item)]
     
-  def rename_status(self, duplicates):
+  def rename_status(self, disable):
     # Disables Rename button if the newname listbox is empty
     # or if there are duplicate outputs in the newname listbox
-    if (self.newname_lstbx.size() == self.newname_blanks) or (duplicates):
+    if (self.newname_lstbx.size() == self.newname_blanks) or (disable):
       self.rename_btn.config(state='disabled')
     else:
       self.rename_btn.config(state='normal')
@@ -351,7 +352,7 @@ class Main(tkinter.Tk):
     
     # Clears listbox selection and gets renaming configuration
     new_filenames = []
-    duplicates = 0
+    disable = 0
     self.newname_blanks = 0
     self.oldname_lstbx.selection_clear(0, self.oldname_lstbx.size())
     self.newname_lstbx.selection_clear(0, self.newname_lstbx.size())
@@ -383,7 +384,10 @@ class Main(tkinter.Tk):
           self.newname_blanks -= 1
           if new_filenames[i] not in uniques:
             self.newname_lstbx.itemconfig(i, fg='red')
-            duplicates = 1
+            disable = 1
+          if '/' in new_filenames[i]:
+            self.newname_lstbx.itemconfig(i, fg='red')
+            disable = 1
         else:
           self.newname_lstbx.insert(len(self.file_list), '')
           self.newname_blanks += 1
@@ -396,7 +400,7 @@ class Main(tkinter.Tk):
     self.oldname_lstbx.yview(self.oldname_lstbx.size())
     self.newname_lstbx.yview(self.newname_lstbx.size())
     self.cleanup(self.rename_var.get())
-    self.rename_status(duplicates)
+    self.rename_status(disable)
     
   def add_files(self):
     errlog = ''
