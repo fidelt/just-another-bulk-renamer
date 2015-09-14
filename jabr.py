@@ -219,7 +219,7 @@ class Main(tkinter.Tk):
         self.modules[i] = __import__(script)
       except (TypeError, ImportError):
         errlog += "{0}\n".format(traceback.format_exc())
-        self.err = "Unable to load all scripts.\n" + \
+        self.err = "Unable to load all scripts.\n" \
                    "See Error.log for more information."
         scripts.pop(i)
         i -= 1
@@ -257,9 +257,8 @@ class Main(tkinter.Tk):
   def delduplicates(self, oldlist, newlist):
     # Checks for duplicates and removes them from files to be added
     duplicates = set(oldlist).intersection(set(newlist))
-    for item in newlist:
-      if item in duplicates:
-        del newlist[newlist.index(item)]
+    for item in duplicates:
+      newlist.remove(item)
     
   def rename_status(self, disable):
     # Disables Rename button if the newname listbox is empty
@@ -382,10 +381,7 @@ class Main(tkinter.Tk):
         if (self.file_list[i][0] != new_filenames[i]) or (new_filenames[i] not in uniques):
           self.newname_lstbx.insert(i, new_filenames[i])
           self.newname_blanks -= 1
-          if new_filenames[i] not in uniques:
-            self.newname_lstbx.itemconfig(i, fg='red')
-            disable = 1
-          if '/' in new_filenames[i]:
+          if ('/' in new_filenames[i]) or (new_filenames[i] not in uniques):
             self.newname_lstbx.itemconfig(i, fg='red')
             disable = 1
         else:
@@ -412,7 +408,7 @@ class Main(tkinter.Tk):
     except Exception:
       errlog += "{0}\n".format(traceback.format_exc())
       self.show_error(
-          "Unable to add all files.\n" + \
+          "Unable to add all files.\n" \
           "See Error.log for more information.",
           errlog
           )
@@ -481,7 +477,7 @@ class Main(tkinter.Tk):
       
     if errlog:
       self.show_error(
-          "All files were not renamed.\n" + \
+          "All files were not renamed.\n" \
           "See Error.log for more information.",
           errlog
           )
@@ -510,10 +506,10 @@ class Main(tkinter.Tk):
         self.file_list.pop(newname_lst.index(newname_lst[i]))
         newname_lst.pop(newname_lst.index(newname_lst[i]))
         i -= 1
-    
+    errlog = "."
     if errlog:
       self.show_error(
-          "Not all files were renamed.\n" + \
+          "Not all files were renamed.\n" \
           "See Error.log for more information.",
           errlog
           )
