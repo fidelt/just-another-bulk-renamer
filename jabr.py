@@ -68,6 +68,11 @@ class Main(tkinter.Tk):
     about_author = tkinter.Label(self.about_grp, text='Genes Fidel Tamondong')
     about_author.grid(column=1, row=1, sticky='w')
     
+    about_icon_label = tkinter.Label(self.about_grp, text='Icon Artist:')
+    about_icon_label.grid(column=0, row=2, sticky='e')
+    about_icon = tkinter.Label(self.about_grp, text='Oxygen Team')
+    about_icon.grid(column=1, row=2, sticky='w')
+    
     self.about_grp.grid_columnconfigure(0, weight=1)
     self.about_grp.grid_columnconfigure(1, weight=1)
     self.about.grid_columnconfigure(0, weight=1)
@@ -506,7 +511,6 @@ class Main(tkinter.Tk):
         self.file_list.pop(newname_lst.index(newname_lst[i]))
         newname_lst.pop(newname_lst.index(newname_lst[i]))
         i -= 1
-    errlog = "."
     if errlog:
       self.show_error(
           "Not all files were renamed.\n" \
