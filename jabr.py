@@ -201,7 +201,7 @@ class Main(tkinter.Tk):
     try:
       files = os.listdir(self.getpath(self.jabr_loc(), 'scripts'))
       for file in files:
-        if file.endswith('.py'):
+        if file.endswith(('.py', '.pyc')):
           scripts.append(file)
     except OSError:
       pass

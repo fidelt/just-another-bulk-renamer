@@ -11,7 +11,7 @@ if (sys.version_info[0] >= 3):
 else:
   import Tkinter as tkinter
   
-def init(jabr, update_newname):  
+def init(jabr, update_newname):
   replace_label = tkinter.Label(jabr, text='Replace:')
   replace_label.grid(column=0, row=0, sticky='e')
   init.replace_entry = tkinter.Entry(jabr, width=1)

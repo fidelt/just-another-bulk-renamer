@@ -49,7 +49,7 @@ def check_inputs(key=''):
     init.end_spinbox.config(bg='red')
     init.rename = 0
   init.update_newname()
-    
+  
 def update_filename(string):
   from_where = init.fromvar.get()
   
