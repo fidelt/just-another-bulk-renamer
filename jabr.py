@@ -73,6 +73,11 @@ class Main(tkinter.Tk):
     about_icon = tkinter.Label(self.about_grp, text='Oxygen Team')
     about_icon.grid(column=1, row=2, sticky='w')
     
+    about_license_label = tkinter.Label(self.about_grp, text='License:')
+    about_license_label.grid(column=0, row=3, sticky='e')
+    about_license = tkinter.Label(self.about_grp, text='GPLv3')
+    about_license.grid(column=1, row=3, sticky='w')
+    
     self.about_grp.grid_columnconfigure(0, weight=1)
     self.about_grp.grid_columnconfigure(1, weight=1)
     self.about.grid_columnconfigure(0, weight=1)
